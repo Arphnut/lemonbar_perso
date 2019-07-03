@@ -30,7 +30,7 @@ BAD_COLOR = "#ff0000"
 LIGHT_GRAY = '#cccccc'     # Color to output current desktop
 DARK_GRAY = '#888888'      # Color to output idle desktop
 MODE_COLOR = '#905500'     # COlor to output the mode
-CURRENT_DIR = os.getcwd()
+CURRENT_DIR = sys.argv[0].rsplit('/', 1)[0]+'/'
 
 
 def update_workspaces(i3con):
