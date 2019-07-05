@@ -6,8 +6,8 @@
 # Implement the ethernet, and improve the wifi one (connecting...)
 # Implement a way to use applets (nm-applet, VLC...)
 
-
-source lemonbar_config.sh
+directory=$(dirname $0)
+source $directory/lemonbar_config.sh
 echo $PIPE
 
 clock() {

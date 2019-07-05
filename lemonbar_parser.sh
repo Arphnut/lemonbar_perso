@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source lemonbar_config.sh
+directory=$(dirname $0)
+source $directory/lemonbar_config.sh
 
 
 desk=""
