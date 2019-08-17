@@ -22,7 +22,7 @@ fi
 $directory/lemonbar_data.sh &
 $directory/get_desktop.py &
 sleep 1
-tail -f $PIPE | $directory/lemonbar_parser.sh | lemonbar  -b -u 3 -f "Roboto Medium-12" -f "Font Awesome 5 Free-12" -f "Roboto Black-12" | bash  & # Launch the reader, that display the datas to the lemonbar programs.
+tail -f $PIPE | $directory/lemonbar_parser.sh | lemonbar  -b -u 3 -f "Roboto Medium-12" -f "Font Awesome 5 Free-12" -f "Roboto Black-12" -B '#1D252C' | bash  & # Launch the reader, that display the datas to the lemonbar programs.
 sleep 1
 
 

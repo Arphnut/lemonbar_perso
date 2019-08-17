@@ -60,7 +60,7 @@ do
                  ETH) wifi="\uf796 $wifi " ;; # Connected to the internet
                  WAE) wif=$(cut -d' ' -f1 <<<$wifi)
                       eth=$(cut -d' ' -f2 <<<$wifi)
-                      wifi="\uf1eb $wif${SEPARATOR}%{T3}\uf796 %{T1}$eth " ;; # Connected to both th wifi and ethernet
+                      wifi="\uf1eb $wif${SEPARATOR}%{T3}\uf796 %{T1}$eth " ;; # Connected to both the wifi and ethernet
                  CON) wifi="\uf519" ;;
                  DIS) wifi="\uf1eb \uf05e" ;;
                  ASL) wifi=""
