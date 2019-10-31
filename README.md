@@ -2,19 +2,21 @@
 
 This folder contains utilities that will be needed for lemonbar.
 
-* get_desktop.py : Get the current desktop and whether it is focused, urgent, and the current mode, using i3ipc.
-* goto_desktop.py : Got to the asked desktop.
-* lemonbar_data.sh: Display useful data for the lemonbar.
-                   It displays information such as the time, the load, the volume, the worskpaces... (I should move to conky).
+* get\_desktop.py : Get the current desktop and whether it is focused, urgent, and the current mode, using i3ipc.
+* goto\_desktop.py : Got to the asked desktop.
+* lemonbar\_data.sh: Display useful data for the lemonbar. It uses conky for everything except the sound.n
+                   It displays information such as the time, the load, the volume...
 
-* lemonbar_parser.sh:  Read the pipe (fifo), and return the aranged data received from display data.
-* lemonbar_exit.sh: Allow to end the read_fifo.sh script (it removes the pipe file before ending).
-* lemonbar_launcher.sh: It launches the whole lemonbar program, with its setup.
-* lemonbar_config.sh: the config files. Contain the colors, fonts...
+* lemonbar\_parser.sh:  Read the pipe (fifo), and return the aranged data received from display data.
+* lemonbar\_exit.sh: Allow to end the script reading the FIFO (it removes the pipe file before ending).
+* lemonbar\_launcher.sh: It launches the whole lemonbar program, with its setup.
+* lemonbar\_config.sh: the config files. Contain the colors, fonts...
+* lemonbar\_conky: The conky configuration file.
 
 ## Usage
-Just launch the 'lemonbar_launcher.sh' script.
+Just launch the 'lemonbar\_launcher.sh' script.
+This will script launch the two scripts sending data to the FIFO (data and desktop), and then send all data received from the FIFO through the parser, and finally to lemonbar.
 
 ## Next improvement
-* Use conky (easier to understand, and i hope, less CPU).
+* Use conky (easier to understand, and I hope, less CPU).
 * Add more comment.

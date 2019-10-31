@@ -1,0 +1,23 @@
+-- Conky config for lemonbar
+
+conky.config = {
+    background =false, 
+    total_run_times = 1,
+    out_to_console = true,
+    out_to_x = false,
+    format_human_readable = true,
+    }
+
+conky.text = [[
+SYS\
+${time %H:%M:%S %d-%m-%Y} \
+${loadavg 1} \
+${fs_used_perc /} \
+${fs_used_perc /home/etienne} \
+${if_up wlp3s0}${wireless_link_qual_perc wlp3s0} $else NO \
+${endif} \
+${if_existing /sys/class/net/enp4s0f1/operstate up} YES $else NO \
+${endif}\
+${hwmon 1 temp 1} \
+${battery_short BAT1}
+]]

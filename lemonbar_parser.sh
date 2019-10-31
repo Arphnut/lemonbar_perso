@@ -31,69 +31,91 @@ do
         MOD) mode=$(cut -b 4- <<<$line)
              update=true # We update the display because we changeed the mode.
              ;;
-        LOA) loadinter=$(cut -b 4- <<<$line)
-             loadtype=$(cut -b -3 <<<$loadinter)
-             case $loadtype in
-                 GOO) load="%{T3}L: %{T1}$(cut -b 4- <<<$loadinter)";;
-                 BAD) load="%{F${BAD_COLOR}}%{T3}L: %{T1}$(cut -b 4- <<<$loadinter)%{F-}";;
-             esac
-             ;;
-        ROO) rootinter=$(cut -b 4- <<<$line)
-             rootype=$(cut -b -1 <<<$rootinter)
-             case $rootype in
-                 N) root="";;
-                 T) root="\uf0c7 $(cut -b 2- <<<$rootinter)%" ;;
-             esac
-             ;;
-        HOM) homeinter=$(cut -b 4- <<<$line)
-             hometype=$(cut -b -1 <<<$homeinter)
-             case $hometype in
-                 N) home="" ;;
-                 T) home="\uf015 $(cut -b 2- <<<$homeinter)%" ;;
-             esac
-             ;;
-        WIF) wifinter=$(cut -b 4- <<<$line)
-             wifitype=$(cut -b -3 <<<$wifinter)
-             wifi=$(cut -b 4- <<<$wifinter)
-             case $wifitype in
-                 WIF) wifi="\uf1eb $wifi" ;; # Connected to the wifi
-                 ETH) wifi="\uf796 $wifi " ;; # Connected to the internet
-                 WAE) wif=$(cut -d' ' -f1 <<<$wifi)
-                      eth=$(cut -d' ' -f2 <<<$wifi)
-                      wifi="\uf1eb $wif${SEPARATOR}%{T3}\uf796 %{T1}$eth " ;; # Connected to both the wifi and ethernet
-                 CON) wifi="\uf519" ;;
-                 DIS) wifi="\uf1eb \uf05e" ;;
-                 ASL) wifi=""
-             esac
-             ;;
-        BAT) # The intermediate value of the battery, before prerpocessing.
-            batinter=$(cut -b 4- <<<$line)
-            battype=$(cut -b -3 <<<$batinter)
-            bat=$(cut -b 4- <<<$batinter)
+	SYS)# Set the clock
+	    sys_arr=(${line#???})
+	    timeclock=${sys_arr[0]}
+	    timedate=${sys_arr[1]}
+            clock="\uf017 $timeclock \uf073 $timedate"
+	    
+	    # Set the load
+	    loadinter=${sys_arr[2]}
+	    loadinter=$(sed 's/,/./g' <<< $loadinter)
+	    if (( $(bc -l <<< "$loadinter < $LOAD_THRESHOLD") ))
+	    then
+                load="%{T3}L: %{T1}$loadinter"
+	    else
+                load="%{F${BAD_COLOR}}%{T3}L: %{T1}$loadinter%{F-}"
+	    fi
+
+	    # Usage of the main disk
+	    rootinter=${sys_arr[3]}
+	    if [[ $rootinter -ge $DISK_ROOT_THRESHOLD ]]
+	    then
+                root="%{F${BAD_COLOR}}\uf0c7 $rootinter%%{F-}"
+	    fi
+
+	    # Usage of the home disk
+            homeinter=${sys_arr[4]}
+            if [[ $homeinter -ge $DISK_HOME_THRESHOLD ]]
+	    then
+                home="%{F${BAD_COLOR}}\uf015 $homeinter%%{F-}" 
+            fi
+
+	    # Wifi parameterization
+            wifinter=${sys_arr[5]}
+	    if [[ $wifinter == NO ]]
+	    then
+		wifi="\uf1eb \uf05e  "
+	    else
+		wifi="\uf1eb $wifinter "
+	    fi
+	    
+
+	    # Ethernet parameterization
+	    ethinter=${sys_arr[6]}
+	    if [[ $ethinter == YES ]]
+	    then
+	       eth="\uf063 "
+	    else
+		eth=""
+	    fi
+
+	    # The temperature of the computer
+	    temp="${sys_arr[7]}°C"
+
+	    # Battery Usage
+            battype=${sys_arr[8]}
+	    bat=${sys_arr[9]}
             case $battype in
-                CHA) # Battery is charging
-                    bat="%{F${GOOD_COLOR}}\uf0e7 $bat%%{F-}" ;; 
-                ALE) # Battery is in alert mode (lower than 10%)
-                    bat="%{F${BAD_COLOR}}\uf244 $bat%%{F-}" ;; 
-                25P) # Battery is lower thatn 25
-                     bat="%{F${DEGRADED_COLOR}}\uf244 $bat%%{F-}" ;;
-                50P) # Battery is lower thatn 50
-                     bat="%{F${DEGRADED_COLOR}}\uf243 $bat%%{F-}" ;;
-                75P) # Battery is lower thatn 50
-                     bat="%{F${DEGRADED_COLOR}}\uf242 $bat%%{F-}" ;;
-                100) # Battery is lower thatn 75
-                     bat="%{F${DEGRADED_COLOR}}\uf241 $bat%%{F-}" ;;
-                FUL) # Battery is full
-                     bat="\uf240 $bat%" ;;
+                C) # Battery is charging
+                    bat="%{F${GOOD_COLOR}}\uf0e7 $bat %{F-}" ;; 
+                F) # Battery is full
+                     bat="\uf240 100%" ;;
+                E|N) # Battery is empty or not present
+                    bat="%{F${BAD_COLOR}}\uf244 $bat %{F-}" ;;
+		D) # Battery is discharging
+		    bat_percent=$(sed 's/%//g' <<<$bat)
+		    if [[ $bat_percent -le 10 ]]
+		    then
+			bat="%{F${BAD_COLOR}}\uf244 $bat %{F-}"
+		    elif [[ $bat_percent -le 25 ]]
+		    then
+			 bat="%{F${DEGRADED_COLOR}}\uf244 $bat %{F-}"
+		    elif [[ $bat_percent -le 50 ]]
+		    then
+			bat="%{F${DEGRADED_COLOR}}\uf243 $bat %{F-}"
+		    elif [[ $bat_percent -le 75 ]]
+		    then
+			bat="%{F${DEGRADED_COLOR}}\uf242 $bat %{F-}"
+		    elif [[ $bat_percent -le 100 ]]
+		    then
+			bat="%{F${DEGRADED_COLOR}}\uf241 $bat %{F-}"
+		    else
+			ba="%{F${BAD_COLOR}}\uf244 UNK %{F-}"
+		    fi
+		    ;;
             esac
-             ;;
-        TEM) temp=$(cut -b 4- <<<$line)
-             ;;
-        CLO) clockinter=$(cut -b 4- <<<$line)
-             timeclock=$(cut -d' ' -f1 <<<$clockinter)
-             timedate=$(cut -d' ' -f2 <<<$clockinter)
-             clock="\uf017 $timeclock \uf073 $timedate"
-             ;;
+            ;;
         VOL) volinter=$(cut -b 4- <<<$line)
              voltype=$(cut -b -3 <<<$volinter)
              vol=$(cut -b 4- <<<$volinter)
@@ -111,6 +133,6 @@ do
     esac
     if [[ $update == true ]]
        then
-           echo -e  "${desk}${mode}%{r}${vol}${SEPARATOR}${load}${SEPARATOR}${root}${SEPARATOR}${home}${SEPARATOR}${wifi}${bat}${SEPARATOR}${temp}${SEPARATOR}${clock}"
+           echo -e  "${desk}${mode}%{r}${vol}${SEPARATOR}${load}${SEPARATOR}${root}${SEPARATOR}${home}${SEPARATOR}${wifi}${eth}${bat}${SEPARATOR}${temp}${SEPARATOR}${clock}"
     fi
 done

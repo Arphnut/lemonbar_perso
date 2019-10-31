@@ -9,3 +9,4 @@ then
 fi
 
 echo "QUIT">$PIPE
+pkill lemonbar
