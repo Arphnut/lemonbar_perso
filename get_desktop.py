@@ -22,19 +22,20 @@ import sys
 import os
 
 PIPE = "/tmp/pipe_lemonbar"
-SEP_COLOR = "#aaaaff"      # Color of the separator
-GOOD_COLOR = "#008888"     # Color to print when the output is good
+SEP_COLOR = "#aaaaff"  # Color of the separator
+GOOD_COLOR = "#008888"  # Color to print when the output is good
 DEGRADED_COLOR = "#ff00ff"  # Color to print when the output is degraded
 # Color to output when the output is bad or dangerous for the computer.
 BAD_COLOR = "#ff0000"
-LIGHT_GRAY = '#cccccc'     # Color to output current desktop
-DARK_GRAY = '#888888'      # Color to output idle desktop
-MODE_COLOR = '#905500'     # COlor to output the mode
+LIGHT_GRAY = '#cccccc'  # Color to output current desktop
+DARK_GRAY = '#888888'  # Color to output idle desktop
+MODE_COLOR = '#905500'  # COlor to output the mode
 CURRENT_DIR = sys.argv[0].rsplit('/', 1)[0]
 
 
 def update_workspaces(i3con):
     workspaces = i3con.get_workspaces()
+    workspaces.sort(key=lambda x: x['num'])
     desktop_bar = "DES"
     id_desktop = 0
     goto_desk = CURRENT_DIR + '/goto_desktop.py'
@@ -60,7 +61,7 @@ def write_to_pipe(pipe_name, msg):
     if not os.path.exists(pipe_name):
         sys.exit()
     with open(pipe_name, "w") as pipe:
-        pipe.write(msg+"\n")
+        pipe.write(msg + "\n")
 
 
 def on_workspace_focus(i3con, e):
