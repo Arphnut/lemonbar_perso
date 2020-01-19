@@ -35,16 +35,16 @@ do
 	    sys_arr=(${line#???})
 	    timeclock=${sys_arr[0]}
 	    timedate=${sys_arr[1]}
-            clock="\uf017 $timeclock \uf073 $timedate"
+            clock="%{A:gnome-clocks:}\uf017 $timeclock%{A} %{A:gnome-calendar:}\uf073 $timedate%{A}"
 	    
 	    # Set the load
 	    loadinter=${sys_arr[2]}
 	    loadinter=$(sed 's/,/./g' <<< $loadinter)
 	    if (( $(bc -l <<< "$loadinter < $LOAD_THRESHOLD") ))
 	    then
-                load="%{T3}L: %{T1}$loadinter"
+                load="%{A:gnome-terminal -- htop:}%{T3}L: %{T1}$loadinter%{A}"
 	    else
-                load="%{F${BAD_COLOR}}%{T3}L: %{T1}$loadinter%{F-}"
+                load="%{A:gnome-terminal -- htop:}%{F${BAD_COLOR}}%{T3}L: %{T1}$loadinter%{F-}%{A}"
 	    fi
 
 	    # Usage of the main disk
@@ -81,7 +81,7 @@ do
 	    fi
 
 	    # The temperature of the computer
-	    temp="${sys_arr[7]}°C"
+	    temp="%{T3}T: %{T1}${sys_arr[7]}°C"
 
 	    # Battery Usage
             battype=${sys_arr[8]}
