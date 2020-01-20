@@ -115,6 +115,7 @@ do
 		    fi
 		    ;;
             esac
+	    bat="%{A:gnome-power-statistics:}$bat%{A}"
             ;;
         VOL) volinter=$(cut -b 4- <<<$line)
              voltype=$(cut -b -3 <<<$volinter)
