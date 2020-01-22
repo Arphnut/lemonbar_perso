@@ -81,7 +81,7 @@ do
 	    fi
 
 	    # The temperature of the computer
-	    temp="%{T3}T: %{T1}${sys_arr[7]}°C"
+	    temp="\uf2c9 ${sys_arr[7]}°C"
 
 	    # Battery Usage
             battype=${sys_arr[8]}
