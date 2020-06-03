@@ -27,8 +27,8 @@ def goto_desk(i3con, desk_id):
     id_desk (int): the id of the desk we want to go to.
     """
     workspaces = i3con.get_workspaces()
-    workspaces.sort(key=lambda x: x['num'])
-    desk_name = workspaces[desk_id]['name']
+    workspaces.sort(key=lambda x: x.num)
+    desk_name = workspaces[desk_id].name
     i3con.command("workspace {}".format(desk_name))
 
 

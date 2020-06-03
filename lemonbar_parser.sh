@@ -52,13 +52,17 @@ do
 	    if [[ $rootinter -ge $DISK_ROOT_THRESHOLD ]]
 	    then
                 root="%{F${BAD_COLOR}}\uf0c7 $rootinter%%{F-}"
+	    else
+		root=""
 	    fi
 
 	    # Usage of the home disk
             homeinter=${sys_arr[4]}
             if [[ $homeinter -ge $DISK_HOME_THRESHOLD ]]
 	    then
-                home="%{F${BAD_COLOR}}\uf015 $homeinter%%{F-}" 
+                home="%{F${BAD_COLOR}}\uf015 $homeinter%%{F-}"
+	    else
+		home=""
             fi
 
 	    # Wifi parameterization
@@ -132,8 +136,9 @@ do
             update=true
             ;;
     esac
+    powerButton=" %{F${BAD_COLOR}}%{A:~/.scripts/powerMenu/powerMenu.sh:}\uf011%{A}%{F-}"
     if [[ $update == true ]]
        then
-           echo -e  "${desk}${mode}%{r}${vol}${SEPARATOR}${load}${SEPARATOR}${root}${SEPARATOR}${home}${SEPARATOR}${wifi}${eth}${bat}${SEPARATOR}${temp}${SEPARATOR}${clock}"
+           echo -e  "${desk}${mode}%{r}${vol}${SEPARATOR}${load}${SEPARATOR}${root}${SEPARATOR}${home}${SEPARATOR}${wifi}${eth}${bat}${SEPARATOR}${temp}${SEPARATOR}${clock}${powerButton}"
     fi
 done

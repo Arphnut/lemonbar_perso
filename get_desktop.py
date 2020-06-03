@@ -35,23 +35,23 @@ CURRENT_DIR = sys.argv[0].rsplit('/', 1)[0]
 
 def update_workspaces(i3con):
     workspaces = i3con.get_workspaces()
-    workspaces.sort(key=lambda x: x['num'])
+    workspaces.sort(key=lambda x: x.num)
     desktop_bar = "DES"
     id_desktop = 0
     goto_desk = CURRENT_DIR + '/goto_desktop.py'
     for workspace in workspaces:
         button = "%{{A:{0} {1}:}}".format(goto_desk, id_desktop)
-        if workspace['focused']:
+        if workspace.focused:
             display_workspace = "%{{U#ff0000}}%{{+o}}%{{B{0}}} {1} %{{B-}}%{{-o}}%{{U-}}".format(
-                LIGHT_GRAY, workspace['name'].replace('_', ' '))
+                LIGHT_GRAY, workspace.name.replace('_', ' '))
             desktop_bar += button + display_workspace + "%{A}"
-        elif workspace['urgent']:
+        elif workspace.urgent:
             display_workspace = "%{{U#ff6105}}%{{+o}}%{{B{0}}} {1} %{{B-}}%{{-o}}%{{U-}}".format(
-                BAD_COLOR, workspace['name'].replace('_', ' '))
+                BAD_COLOR, workspace.name.replace('_', ' '))
             desktop_bar += button + display_workspace + "%{A}"
         else:
             display_workspace = "%{{U#ff0000}}%{{+o}}%{{B{0}}} {1} %{{B-}}%{{-o}}%{{U-}}".format(
-                DARK_GRAY, workspace['name'].replace('_', ' '))
+                DARK_GRAY, workspace.name.replace('_', ' '))
             desktop_bar += button + display_workspace + "%{A}"
         id_desktop += 1
     return desktop_bar
