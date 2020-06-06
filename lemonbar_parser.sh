@@ -35,7 +35,7 @@ do
 	    sys_arr=(${line#???})
 	    timeclock=${sys_arr[0]}
 	    timedate=${sys_arr[1]}
-            clock="%{A:gnome-clocks:}\uf017 $timeclock%{A} %{A:gnome-calendar:}\uf073 $timedate%{A}"
+            clock="\uf017 $timeclock \uf073 $timedate"
 	    
 	    # Set the load
 	    loadinter=${sys_arr[2]}
@@ -136,9 +136,10 @@ do
             update=true
             ;;
     esac
-    powerButton=" %{F${BAD_COLOR}}%{A:~/.scripts/powerMenu/powerMenu.sh:}\uf011%{A}%{F-}"
+    powerbutton="%{A:~/.scripts/powerMenu/powerMenu.sh:}%{F${PURPLE}} \uf011 %{F-}%{A}"
+    
     if [[ $update == true ]]
        then
-           echo -e  "${desk}${mode}%{r}${vol}${SEPARATOR}${load}${SEPARATOR}${root}${SEPARATOR}${home}${SEPARATOR}${wifi}${eth}${bat}${SEPARATOR}${temp}${SEPARATOR}${clock}${powerButton}"
+           echo -e  "${desk}${mode}%{r}${vol}${SEPARATOR}${load}${SEPARATOR}${root}${SEPARATOR}${home}${SEPARATOR}${wifi}${eth}${bat}${SEPARATOR}${temp}${SEPARATOR}${clock}${SEPARATOR}${powerbutton}"
     fi
 done

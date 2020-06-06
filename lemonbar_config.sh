@@ -19,6 +19,7 @@ DEGRADED_COLOR="#ff00ff" # Color to print when the output is degraded
 BAD_COLOR="#ff0000"      # Color to output when the output is bad or dangerous for the computer.
 LIGHT_GRAY='#cccccc'     # Color to output current desktop
 DARK_GRAY='#888888'      # Color to output idle desktop
+PURPLE='#a030FF'         # Color for the power button
 
 
 ## Fonts
