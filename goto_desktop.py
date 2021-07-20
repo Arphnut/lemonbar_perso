@@ -2,7 +2,7 @@
 """
 Created at 18:31:59 on vendredi 28-06-2019
 
-@author: Étienne de Montbrun
+@author: Etienne
 
 Name:
 -----
